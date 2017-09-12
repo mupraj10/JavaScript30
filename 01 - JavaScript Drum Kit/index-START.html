@@ -47,6 +47,7 @@
     </div>
   </div>
 
+
   <audio data-key="65" src="sounds/clap.wav"></audio>
   <audio data-key="83" src="sounds/hihat.wav"></audio>
   <audio data-key="68" src="sounds/kick.wav"></audio>
@@ -58,7 +59,30 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  function playSound(e){
+    
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
+    
+    console.log(key)
+    if(!audio) return; //  stop the function from running if key has no audio
+    audio.currentTime = 0; // makes suceeding key the sound plays again and again
+    audio.play(); //allows for the sound to play with the key
 
+    key.classList.add('playing') //adding a class to an element to highlight the key
+    
+  
+  }
+  window.addEventListener('keydown', playSound );
+  //can add a transition end event to know when the event is done.
+  function removeTransition(e){
+    if(e.propertyName !== 'transform') return; //you don't want transfrom events you only want the ones that are end
+    // console.log(e.propertyName)
+    this.classList.remove('playing');
+
+  }
+  const keys = document.querySelectorAll('.key');
+  keys.forEach( key => key.addEventListener('transitionend', removeTransition))
 </script>
 
 
